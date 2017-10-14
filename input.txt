@@ -1,0 +1,77 @@
+package inputProcess;
+
+import java.io.*;
+import java.util.Scanner;
+
+public class stringProcessing{
+
+//atribute
+    private String javaCode = new String(); // contains all input code
+    private String inputName;  // name of input file
+    private String outputName; //name of output file
+
+//constructor
+    public stringProcessing() {
+        javaCode = new String();
+    }
+    public stringProcessing(String inputName, String outputName) {
+        javaCode = new String();
+        this.outputName = outputName;
+        this.inputName = inputName;
+    }
+
+//methods
+    public void readInput() throws IOException {
+        Scanner input = new Scanner(new File(inputName));
+        while(input.hasNextLine()) {
+            String s = input.nextLine();
+            s = deleteLineComments(s);
+            javaCode += s;
+        }
+    }
+
+    public void printCode() throws IOException {
+        PrintWriter writer = new PrintWriter(outputName, "UTF-8");
+        //writer.println(javaCode);
+        writer.close();
+    }
+
+
+    public String deleteLineComments(String s) {
+        return (s.replaceAll("\\/\\/.*", ""));
+    }
+
+    public void deleteComments() {
+        javaCode = javaCode.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+    }
+
+    public void deleteKeyWord(String keyWord) {
+        while(javaCode.indexOf(keyWord) > -1) {
+            int startIndex = javaCode.indexOf(keyWord);
+            int endIndex = javaCode.indexOf(";", startIndex);
+            String toBeReplaced = javaCode.substring(startIndex, endIndex + 1);
+            javaCode = javaCode.replace(toBeReplaced, "");
+        }
+    }
+
+    public int findCloseChar(int beginIndex) {
+        int index = javaCode.indexOf("{", beginIndex);
+        int count = 1;
+        for (int i = index+1; i < javaCode.length(); i++) {
+            if (javaCode.charAt(i) == '{') {
+                count++;
+            }
+            else if (javaCode.charAt(i) == '}') {
+                count--;
+            }
+            if (count == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public String findAClass() {
+        return javaCode;
+    }
+}

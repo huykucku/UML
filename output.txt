@@ -1,0 +1,19 @@
+accessLevel: public
+abstract: false
+type: class
+name: stringProcessing
+extends: 
+implements: 
+atributes:
+	private String javaCode = new String()
+	private String inputName
+	private String outputName
+methods:
+	public stringProcessing() 
+	public stringProcessing(String inputName,String outputName) 
+	public void readInput() throws IOException 
+	public void printCode() throws IOException 
+	public String deleteLineComments(String s) 
+	public void deleteComments() 
+	public void deleteKeyWord(String keyWord) 
+	public int findCloseChar(int beginIndex) 
